@@ -158,7 +158,7 @@ ipIfPrint() (
         if [ "x${object}" = "xlink" ] ; then
             mode="mode DEFAULT "
         fi
-        if isLoopback4 "${ip4}" ; then
+        if [ "${name}" = "lo" ] || isLoopback4 "${ip4}" ; then
             ipIfBasePrint "${index}" "${name}" "LOOPBACK,UP,LOWER_UP" "mtu 65536 qdisc noqueue state UNKNOWN ${mode}group default qlen 1000"
         else
             ipIfBasePrint "${index}" "${name}" "BROADCAST,MULTICAST,UP,LOWER_UP" "mtu 1500 qdisc fq_codel state UP ${mode}group default qlen 1000"
@@ -226,8 +226,8 @@ ifconfigIfPrint() (
     ip6s="${4}"
 
     # interface
-    if isLoopback4 "${ip4}" ; then
-        printf '%s: flags=%s  %s\n' "${name}" "73<UP,LOOPBACK,RUNNING>" "mtu 1500"
+    if [ "${name}" = "lo" ] || isLoopback4 "${ip4}" ; then
+        printf '%s: flags=%s  %s\n' "${name}" "73<UP,LOOPBACK,RUNNING>" "mtu 65536"
     else
         printf '%s: flags=%s  %s\n' "${name}" "4163<UP,BROADCAST,RUNNING,MULTICAST>" "mtu 1500"
     fi
