@@ -293,7 +293,7 @@ cmdPrint() (
             ifconfigIfPrint "lo" "00:00:00:00:00:00" "127.0.0.1/8" "::1/128"
         fi
     fi
-    ipconfig \
+    { ipconfig /all | tr -d '\r' ; printf '\n' ; } \
     | {
     adapterIndex="2"
     adapter=""
@@ -304,7 +304,7 @@ cmdPrint() (
     macaddr=""
     ethindex=0
     wlanindex=0
-    while read -r line ; do
+    while IFS= read -r line ; do
         if printf '%s\n' "$line" | grep -q '^Ethernet adapter' ; then
             adapter="eth"
         elif printf '%s\n' "$line" | grep -q '^Wireless LAN adapter' ; then
